@@ -36,12 +36,16 @@ namespace Danciu_Alexandra_Lab2.Pages.Books
                 return NotFound();
             }
             Book = book;
-            ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID",
-"PublisherName");
-            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID",
-"LastName");
-            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID",
-"FirstName");
+
+            var authorList = _context.Author.Select(x => new
+            {
+                x.ID,
+                FullName = x.FirstName + " " + x.LastName
+            }
+            );
+            ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
+            ViewData["AuthorID"] = new SelectList(authorList, "ID", "FullName");
+           
             return Page();
         }
 
